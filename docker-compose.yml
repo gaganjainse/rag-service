@@ -1,0 +1,13 @@
+services:
+  rag-service:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-auto}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    volumes:
+      - chroma-data:/app/.chroma
+
+volumes:
+  chroma-data:
