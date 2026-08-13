@@ -1,0 +1,12 @@
+# Render Blueprint — rag-service (FastAPI + ChromaDB, runs from its Dockerfile)
+# Deploy: push to GitHub, then "New +" -> "Blueprint" -> select this repo.
+# NOTE: ChromaDB persists to the container's disk, so it resets on each deploy.
+# For durable storage, mount a Render disk at the path ChromaDB uses, or switch
+# the store to a hosted vector DB. See docs/DEPLOYMENTS.md.
+services:
+  - type: web
+    name: rag-service
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
