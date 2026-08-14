@@ -1,25 +1,23 @@
-# RAG Service
+# 🧠 RAG Service
 
-Production-style **RAG API** with hybrid retrieval: dense embeddings + BM25-style keyword
-scoring, fused with **Reciprocal Rank Fusion (RRF)** over a ChromaDB vector store. Grounded
-answers with source citations via any OpenAI-compatible chat endpoint (or offline fallback).
+**Production-style RAG API** with hybrid retrieval — dense embeddings + BM25-style
+keyword scoring fused with **Reciprocal Rank Fusion (RRF)** over a ChromaDB vector
+store. Grounded answers with `[source]` citations via any OpenAI-compatible chat
+endpoint, or a fully offline fallback.
 
-## Features
-
-- `POST /ingest/text` & `POST /ingest/file` — chunk (word-based, with overlap) and index documents
-- `POST /search` — hybrid retrieval (vector + keyword), RRF merge
-- `POST /ask` — RAG answer generation with `[source]` citations
-- Embedding backends: `sentence-transformers` (real) or a deterministic hashing embedder (offline/dev)
-- LLM: OpenAI-compatible `chat/completions`; offline echo fallback when no `OPENAI_API_KEY`
-- Docker Compose with persistent ChromaDB volume
-- CI: `pytest` on every push (28 tests)
+![Python](https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-22-success?style=for-the-badge)
+![CI](https://github.com/gaganjainse/rag-service/actions/workflows/ci.yml/badge.svg)
 
 ## Quick start
 
 ```bash
 pip install -r requirements.txt
 uvicorn app.main:app --reload
+```
 
+```bash
 curl -X POST localhost:8000/ingest/text \
   -H 'Content-Type: application/json' \
   -d '{"text": "VIT Vellore focuses on AI and systems...", "source": "vit"}'
@@ -29,38 +27,51 @@ curl -X POST localhost:8000/ask \
   -d '{"question": "What does the CS program focus on?", "k": 3}'
 ```
 
-### Production embeddings (optional)
+Docker: `docker compose up` (persistent ChromaDB volume).
 
-```bash
-pip install sentence-transformers
-export EMBEDDING_BACKEND=st        # or leave "auto"
-export EMBEDDING_MODEL=all-MiniLM-L6-v2
-```
+## Features
 
-### Use a real LLM
+- `POST /ingest/text` & `POST /ingest/file` — word-based chunking (with overlap), index into ChromaDB
+- `POST /search` — hybrid retrieval (vector + keyword), RRF merge
+- `POST /ask` — RAG answer with `[source]` citations
+- Embedding backends: `sentence-transformers` (real) or a deterministic hashing embedder (offline/dev), selected via `EMBEDDING_BACKEND`
+- LLM: OpenAI-compatible `chat/completions`; offline echo fallback when no `OPENAI_API_KEY`
+- Dependency injection via FastAPI lifespan (no import-time model loads); `CHROMA_DIR` overrides the store path
 
-```bash
-export OPENAI_API_KEY=sk-...
-export LLM_MODEL=gpt-4o-mini       # any OpenAI-compatible model
-```
+## Endpoints
 
-### Docker
-
-```bash
-docker compose up --build
-```
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/health` | liveness + document count |
+| POST | `/ingest/text` | index text |
+| POST | `/ingest/file` | index a UTF-8 file |
+| POST | `/search` | hybrid retrieval |
+| POST | `/ask` | grounded answer + citations |
+| GET | `/stats` | document count |
 
 ## Architecture
 
-```
-ingest ──► chunk_text ──► embeddings ──► ChromaDB (persistent)
-                                        ▲
-ask ──► hybrid_search (dense + BM25, RRF) ──► context ──► LLM ──► grounded answer + sources
+```mermaid
+---
+title: rag-service pipeline
+---
+graph LR
+    A["📥 Ingest<br/>text / file"] --> C["✂️ Chunking<br/>word + overlap"]
+    C --> E["🧮 Embedding<br/>sentence-transformers or hash"]
+    E --> V[("📦 ChromaDB")]
+    Q["❓ Query"] --> E
+    E --> H["🔀 Hybrid Search<br/>dense + BM25 → RRF"]
+    V --> H
+    H --> R["🎯 RAG answer<br/>LLM + [source] citations"]
 ```
 
-Evaluated with [`llm-eval-harness`](https://github.com/gaganjainse/llm-eval-harness):
-faithfulness, answer relevance, and correctness against a golden set.
+## Development
+
+```bash
+pytest -q                     # 22 tests
+ruff check app/ tests/        # lint
+```
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
