@@ -6,7 +6,7 @@ store. Grounded answers with `[source]` citations via any OpenAI-compatible chat
 endpoint, or a fully offline fallback.
 
 ![Python](https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python)
-![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue?style=for-the-badge)
 ![Tests](https://img.shields.io/badge/Tests-22-success?style=for-the-badge)
 ![CI](https://github.com/gaganjainse/rag-service/actions/workflows/ci.yml/badge.svg)
 
@@ -74,4 +74,4 @@ ruff check app/ tests/        # lint
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+GPL-3.0-or-later — see [LICENSE](LICENSE).
