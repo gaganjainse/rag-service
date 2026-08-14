@@ -10,6 +10,11 @@ endpoint, or a fully offline fallback.
 ![Tests](https://img.shields.io/badge/Tests-22-success?style=for-the-badge)
 ![CI](https://github.com/gaganjainse/rag-service/actions/workflows/ci.yml/badge.svg)
 
+- **License:** GPL-3.0-or-later
+- **Owner:** Gagan Jain ([@gaganjainse](https://github.com/gaganjainse))
+- **Stack:** Python 3.12 · FastAPI · ChromaDB
+
+
 ## Quick start
 
 ```bash
@@ -75,6 +80,8 @@ ruff check app/ tests/        # lint
 ## License
 
 GPL-3.0-or-later — see [LICENSE](LICENSE).
-## 📚 Docs
 
-Fleet-wide reading compilation: [shesh-docs](https://github.com/gaganjainse/shesh-docs).
+## Status
+
+CI green. Security: [SECURITY.md](SECURITY.md). Compiled reading:
+[shesh-docs](https://github.com/gaganjainse/shesh-docs).
