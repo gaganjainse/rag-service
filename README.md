@@ -75,3 +75,6 @@ ruff check app/ tests/        # lint
 ## License
 
 GPL-3.0-or-later — see [LICENSE](LICENSE).
+## 📚 Docs
+
+Fleet-wide reading compilation: [shesh-docs](https://github.com/gaganjainse/shesh-docs).
