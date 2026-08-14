@@ -5,10 +5,10 @@ keyword scoring fused with **Reciprocal Rank Fusion (RRF)** over a ChromaDB vect
 store. Grounded answers with `[source]` citations via any OpenAI-compatible chat
 endpoint, or a fully offline fallback.
 
-![Python](https://img.shields.io/badge/Python-3.12%2B-blue?style=for-the-badge&logo=python)
-![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue?style=for-the-badge)
-![Tests](https://img.shields.io/badge/Tests-22-success?style=for-the-badge)
-![CI](https://img.shields.io/github/actions/workflow/status/gaganjainse/rag-service/ci.yml?style=for-the-badge&label=CI)
+![Python](https://img.shields.io/badge/Python-3.12%2B-blue?logo=python)
+![License](https://img.shields.io/badge/License-GPL--3.0--or--later-blue)
+![Tests](https://img.shields.io/badge/Tests-22-success)
+![CI](https://github.com/gaganjainse/rag-service/actions/workflows/ci.yml/badge.svg)
 
 - **License:** GPL-3.0-or-later
 - **Owner:** Gagan Jain ([@gaganjainse](https://github.com/gaganjainse))
